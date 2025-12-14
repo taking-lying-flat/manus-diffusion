@@ -110,21 +110,13 @@ def visualize_latent_walk(model, device, save_path, dim=0, num_steps=10, range_v
 
 def create_visualization_grid(model, dataloader, device, save_dir, epoch):
     os.makedirs(save_dir, exist_ok=True)
-    
-    visualize_reconstruction(model, dataloader, device, 
-                           f"{save_dir}/reconstruction_epoch_{epoch}.png", num_images=8)
-    
-    visualize_samples(model, device, 
-                     f"{save_dir}/samples_epoch_{epoch}.png", num_samples=64)
-    
-    visualize_interpolation(model, dataloader, device, 
-                          f"{save_dir}/interpolation_epoch_{epoch}.png", num_interpolations=10)
+    visualize_reconstruction(model, dataloader, device, f"{save_dir}/reconstruction_epoch_{epoch}.png", num_images=8)
+    visualize_samples(model, device, f"{save_dir}/samples_epoch_{epoch}.png", num_samples=64)
+    visualize_interpolation(model, dataloader, device, f"{save_dir}/interpolation_epoch_{epoch}.png", num_interpolations=10)
     
     try:
-        visualize_latent_space_2d(model, dataloader, device, 
-                                f"{save_dir}/latent_space_epoch_{epoch}.png", num_samples=1000)
+        visualize_latent_space_2d(model, dataloader, device, f"{save_dir}/latent_space_epoch_{epoch}.png", num_samples=1000)
     except Exception:
         pass
     
-    visualize_latent_walk(model, device, 
-                         f"{save_dir}/latent_walk_dim0_epoch_{epoch}.png", dim=0, num_steps=10)
+    visualize_latent_walk(model, device, f"{save_dir}/latent_walk_dim0_epoch_{epoch}.png", dim=0, num_steps=10)
