@@ -34,7 +34,7 @@ $$
 我们可以直接从 $x_0$ 采样出 $x_t$，而不需要一步步跑循环：
 
 $$
-q(x_t\mid x_0)=\mathcal{N}\!\big(x_t;\sqrt{\bar\alpha_t}\,x_0,\,(1-\bar\alpha_t)I\big)
+q(x_t\mid x_0)=\mathcal{N}\big(x_t;\sqrt{\bar\alpha_t}\,x_0,\,(1-\bar\alpha_t)I\big)
 $$
 
 **重参数化采样 (Reparameterization Trick) 写法**：
