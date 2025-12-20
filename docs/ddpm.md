@@ -6,7 +6,7 @@
   * Proceedings 页面: [https://proceedings.neurips.cc/paper/2020/hash/4c5bcfec8584af0d967f1ab10179ca4b-Abstract.html](https://proceedings.neurips.cc/paper/2020/hash/4c5bcfec8584af0d967f1ab10179ca4b-Abstract.html)
   * 官方 PDF: [https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf](https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf)
 
----
+
 
 ## 2. 一句话总结
 
@@ -15,7 +15,7 @@ DDPM 将生成建模写成一个 **显式的马尔可夫链潜变量模型**：
 * **反向过程 (Reverse Process)**：学习逐步去噪，恢复数据分布
 * **训练目标**：本质上是最大化变分下界 (ELBO)，最终可化简为 **“预测噪声”的均方误差 (MSE)**
 
----
+
 
 ## 3. 前向扩散过程 (Forward Process)
 
@@ -34,7 +34,7 @@ $$
 我们可以直接从 $x_0$ 采样出 $x_t$，而不需要一步步跑循环：
 
 $$
-q(x_t\mid x_0)=\mathcal{N}\big(x_t;\sqrt{\bar\alpha_t}\,x_0,\,(1-\bar\alpha_t)I\big)
+q(\mathbf{x}_t | \mathbf{x}_0) = \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t}\mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I})
 $$
 
 **重参数化采样 (Reparameterization Trick) 写法**：
@@ -43,7 +43,7 @@ $$
 x_t = \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal{N}(0,I)
 $$
 
----
+
 
 ## 4. 反向生成过程 (Reverse Process)
 
