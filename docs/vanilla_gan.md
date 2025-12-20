@@ -66,7 +66,7 @@ $$
 将最优判别器 $D_G^*(x)$ 代回价值函数，原本的 Minimax 问题在数学上等价于最小化真实分布与生成分布之间的 **Jensen–Shannon Divergence (JSD)**：
 
 $$
-V(D_G^*,G) = -\log 4 + 2\cdot \mathrm{JSD}\big(p_{\text{data}} \,\|\, p_g\big)
+V(D_G^*,G) = -\log 4 + 2\cdot \mathrm{JSD}\big(p_{\text{data}} \| p_g\big)
 $$
 
 这证明了 GAN 的训练过程本质上是在拉近  $p_g$  和  $p_{\text{data}}$  的距离。当且仅当 $p_g = p_{\text{data}}$ 时，JSD 为 0，达到全局最优解 $-\log 4$
