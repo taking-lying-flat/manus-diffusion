@@ -124,6 +124,10 @@ $$
 经过一系列推导和简化（特别是忽略方差权重的加权项），训练目标最终变为极简的**噪声预测均方误差 (MSE)**：
 
 $$
+\boxed{ \mathcal L=\mathbb E_q\!\big[ \underbrace{D_{\rm KL}(q(x_T\!\mid x_0)\,\|\,p(x_T))}_{L_T} +\sum_{t>1}\underbrace{D_{\rm KL}(q(x_{t-1}\!\mid x_t,x_0)\,\|\,p_\theta(x_{t-1}\!\mid x_t))}_{L_{t-1}} \ -\ \underbrace{\log p_\theta(x_0\!\mid x_1)}_{L_0} \big]. }
+$$
+
+$$
 \mathcal{L}_{\text{simple}} = \mathbb{E}_{t,x_0,\epsilon} \left[ \left\| \epsilon - \epsilon_\theta(x_t,t) \right\|_2^2 \right]
 $$
 
@@ -131,7 +135,6 @@ $$
 *  $t \sim \text{Uniform}(\{1,\dots,T\})$
 *  $x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\epsilon$
 
----
 
 ## 8. 采样算法（生成阶段）
 
