@@ -40,7 +40,7 @@ $$
 **重参数化采样 (Reparameterization Trick) 写法**：
 
 $$
-x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal{N}(0,I)
+x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\epsilon,\quad \epsilon\sim\mathcal{N}(0,I)
 $$
 
 
