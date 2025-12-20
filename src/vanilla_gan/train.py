@@ -130,12 +130,13 @@ def train(dataset_name, n_epochs=100, sample_epoch_interval=10, num_workers=4, n
             #  Train Discriminator (once per batch)
             # ---------------------
             optimizer_D.zero_grad()
-            
+
+            # 生成随机噪声并产生假图
             z = torch.randn(batch_size, dataset_config['latent_dim'], device=device)
             gen_imgs = generator(z)
             
-            real_loss = adversarial_loss(discriminator(real_imgs), valid_smooth)
-            fake_loss = adversarial_loss(discriminator(gen_imgs.detach()), fake)
+            real_loss = adversarial_loss(discriminator(real_imgs), valid_smooth)    # 计算真图损失
+            fake_loss = adversarial_loss(discriminator(gen_imgs.detach()), fake)    # 计算假图损失（注意使用 .detach()，防止此处更新生成器）
             d_loss = (real_loss + fake_loss) / 2
             
             d_loss.backward()
@@ -147,9 +148,11 @@ def train(dataset_name, n_epochs=100, sample_epoch_interval=10, num_workers=4, n
             g_loss_accum = 0.0
             for _ in range(n_gen):
                 optimizer_G.zero_grad()
-                
+
+                # 重新采样噪声并生成
                 z = torch.randn(batch_size, dataset_config['latent_dim'], device=device)
                 gen_imgs = generator(z)
+                # 生成器的目标是让判别器认为这张图是 "1" (真图)
                 g_loss = adversarial_loss(discriminator(gen_imgs), valid_hard)
                 
                 g_loss.backward()
@@ -160,6 +163,7 @@ def train(dataset_name, n_epochs=100, sample_epoch_interval=10, num_workers=4, n
             
             # Monitor D(x) and D(G(z)) for stability tracking
             with torch.no_grad():
+                # 计算 D 对真图和假图的平均预测值（经过 Sigmoid 后的概率）
                 real_pred = torch.sigmoid(discriminator(real_imgs)).mean().item()
                 fake_pred = torch.sigmoid(discriminator(gen_imgs.detach())).mean().item()
             
