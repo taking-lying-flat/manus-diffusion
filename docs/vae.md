@@ -26,7 +26,7 @@ $$
 $$
 
 ### (2) 证据下界 (ELBO) 的定义
-由于 KL 散度恒大于等于 0，$\mathcal{L}$ 构成了 $\log p(x)$ 的下界。最大化 $\mathcal{L}$ 即间接优化似然
+由于 KL 散度恒大于等于 0， $\mathcal{L}$ 构成了 $\log p(x)$ 的下界。最大化 $\mathcal{L}$ 即间接优化似然
 
 $$
 \log p_{\theta}(\mathbf{x}^{(i)}) \geq \mathcal{L}(\boldsymbol{\theta}, \phi; \mathbf{x}^{(i)}) = \mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x})} \left[ -\log q_{\phi}(\mathbf{z}|\mathbf{x}) + \log p_{\theta}(\mathbf{x}, \mathbf{z}) \right]
