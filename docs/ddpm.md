@@ -138,7 +138,7 @@ $$
 给定 $x_T \sim \mathcal{N}(0,I)$，从 $t=T$ 迭代回 $1$：
 
 1. **预测噪声**：  $\hat\epsilon = \epsilon_\theta(x_t,t)$
-2. **计算均值**： $\mu_\theta(x_t,t) = \frac{1}{\sqrt{\alpha_t}}\left(x_t - \frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\hat\epsilon\right)$
+2. **计算均值**：  $\mu_\theta(x_t,t) = \frac{1}{\sqrt{\alpha_t}}\left(x_t - \frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\hat\epsilon\right)$
 3. **采样 (Langevin Step)**：$x_{t-1} = \mu_\theta(x_t,t) + \sigma_t z, \quad z \sim \mathcal{N}(0,I)$ (注意：当  $t=1$  时，通常设  $z=0$ ，不加噪声)
 
 
