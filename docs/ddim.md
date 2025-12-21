@@ -140,25 +140,20 @@ $$
 q_\sigma(x_{t-1}\mid x_t,x_0)=\mathcal N(\mu_\sigma(x_t,x_0,t),\ \sigma_t^2 I)
 $$
 
-其中均值被刻意设计成：
+其中均值被刻意设计成
 
 $$
-\mu_\sigma(x_t,x_0,t)
-=
-\sqrt{\bar\alpha_{t-1}}x_0
-+
-\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\cdot
-\frac{x_t-\sqrt{\bar\alpha_t}x_0}{\sqrt{1-\bar\alpha_t}}
+\mu_\sigma(x_t,x_0,t) = \sqrt{\bar\alpha_{t-1}}x_0 + \sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\cdot\frac{x_t-\sqrt{\bar\alpha_t}x_0}{\sqrt{1-\bar\alpha_t}}
 $$
 
 ### 5.1 这均值不是“拍脑袋”：它来自一个更直观的重参数化
-先用闭式边缘把 $x_t$ 写成：
+先用闭式边缘把  $x_t$ 写成：
 
 $$
 x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal N(0,I)
 $$
 
-于是可以反解出 $\epsilon$：
+于是可以反解出  $\epsilon$：
 
 $$
 \frac{x_t-\sqrt{\bar\alpha_t}x_0}{\sqrt{1-\bar\alpha_t}}=\epsilon
@@ -167,7 +162,7 @@ $$
 然后 DDIM 直接规定（这就是它的定义）：
 
 $$
-x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\,\epsilon+\sigma_t z,
+x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\epsilon+\sigma_t z,
 \quad z\sim\mathcal N(0,I)
 $$
 
