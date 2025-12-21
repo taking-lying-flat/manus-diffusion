@@ -124,19 +124,24 @@ $$
 这正是 DDIM 的构造空间：
 **只要你构造一个新的联合分布 $q_\sigma(x_{1:T}\mid x_0)$，让所有边缘 $q_\sigma(x_t\mid x_0)$ 仍等于同一个 $\mathcal N(\sqrt{\bar\alpha_t}x_0,(1-\bar\alpha_t)I)$，训练那套噪声预测就不需要变。**
 
----
 
-## 5. DDIM 的核心：构造一族 $q_\sigma$，边缘不变、联合可变
+
+## 5. DDIM 的核心：构造一族  $q_\sigma$ ，边缘不变、联合可变
 
 DDIM 定义一族“推断分布”（论文里叫 generalized forward / inference process）：
+
 $$
 q_\sigma(x_{1:T}\mid x_0)=q(x_T\mid x_0)\prod_{t=2}^T q_\sigma(x_{t-1}\mid x_t,x_0)
 $$
+
 并令每一步条件分布是：
+
 $$
 q_\sigma(x_{t-1}\mid x_t,x_0)=\mathcal N(\mu_\sigma(x_t,x_0,t),\ \sigma_t^2 I)
 $$
+
 其中均值被刻意设计成：
+
 $$
 \mu_\sigma(x_t,x_0,t)
 =
@@ -148,37 +153,49 @@ $$
 
 ### 5.1 这均值不是“拍脑袋”：它来自一个更直观的重参数化
 先用闭式边缘把 $x_t$ 写成：
+
 $$
 x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal N(0,I)
 $$
+
 于是可以反解出 $\epsilon$：
+
 $$
 \frac{x_t-\sqrt{\bar\alpha_t}x_0}{\sqrt{1-\bar\alpha_t}}=\epsilon
 $$
+
 然后 DDIM 直接规定（这就是它的定义）：
+
 $$
 x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\,\epsilon+\sigma_t z,
 \quad z\sim\mathcal N(0,I)
 $$
+
 给定 $x_t,x_0$ 时，$\epsilon$ 就被确定了。
 这样你立刻得到上面的 $\mu_\sigma$。
 
 ### 5.2 为什么这样做能保证“边缘不变”？
 看 $x_{t-1}\mid x_0$：
+
 $$
 x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0 + \underbrace{\big(\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\,\epsilon+\sigma_t z\big)}_{\text{仍然是 } \mathcal N(0,\ (1-\bar\alpha_{t-1})I)}
 $$
+
 因为 $\epsilon,z$ 独立高斯，方差相加：
+
 $$
 (1-\bar\alpha_{t-1}-\sigma_t^2)+\sigma_t^2=1-\bar\alpha_{t-1}
 $$
+
 所以边缘仍是：
+
 $$
 q_\sigma(x_{t-1}\mid x_0)=\mathcal N(\sqrt{\bar\alpha_{t-1}}x_0,\ (1-\bar\alpha_{t-1})I)
 $$
+
 这就是“边缘完全不变”的严格原因。
 
----
+
 
 ## 6. 生成（反向）怎么来：把 $x_0$ 用网络估计替换掉
 
