@@ -21,7 +21,7 @@ DDPM 的前向扩散也是马尔可夫链：
 
 $$
 q(x_{1:T}\mid x_0)=\prod_{t=1}^T q(x_t\mid x_{t-1}),
-\qquad q(x_t\mid x_{t-1})=\mathcal N(\sqrt{\alpha_t}\,x_{t-1}\(1-\alpha_t)I)
+\qquad q(x_t\mid x_{t-1})=\mathcal N(\sqrt{\alpha_t}\x_{t-1}\(1-\alpha_t)I)
 $$
 
 
