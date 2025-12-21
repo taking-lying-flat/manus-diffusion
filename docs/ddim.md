@@ -96,6 +96,7 @@ $$
 $$
 p_\theta(x_{t-1}\mid x_t)=\mathcal N(\mu_\theta(x_t,t),\ \sigma_t^2 I)
 $$
+
 那么每个 KL（同方差高斯之间）就等价于“均值差的平方”：
 
 $$
