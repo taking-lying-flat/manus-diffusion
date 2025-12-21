@@ -166,7 +166,7 @@ x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\epsilon+
 \quad z\sim\mathcal N(0,I)
 $$
 
-给定 $x_t,x_0$ 时，$\epsilon$ 就被确定了。
+给定  $x_t,x_0$ 时， $\epsilon$ 就被确定了
 这样你立刻得到上面的 $\mu_\sigma$。
 
 ### 5.2 为什么这样做能保证“边缘不变”？
@@ -241,8 +241,8 @@ $$
 
 ## 7. 两个“极限/特例”一下就看懂：DDPM vs DDIM
 
-### 7.1 取特定 $\sigma_t$ $\Rightarrow$ 退化回随机 DDPM（ancestral sampling）
-很多实现用一个 $\eta$ 控制随机性，$\eta=1$ 对应 DDPM 的后验方差：
+### 7.1 取特定  $\sigma_t$ $\Rightarrow$ 退化回随机 DDPM（ancestral sampling）
+很多实现用一个  $\eta$ 控制随机性， $\eta=1$ 对应 DDPM 的后验方差：
 
 $$
 \sigma_t =
@@ -253,7 +253,7 @@ $$
 }
 $$
 
-### 7.2 取 $\sigma_t=0$ $\Rightarrow$ 确定性 DDIM
+### 7.2 取  $\sigma_t=0$ $\Rightarrow$ 确定性 DDIM
 把噪声项直接消掉：
 
 $$
@@ -264,7 +264,7 @@ $$
 }
 $$
 
-此时 给定同一个初始 $x_T$，整条轨迹是确定的（这就是 “implicit / deterministic” 的含义）。
+此时 给定同一个初始  $x_T$，整条轨迹是确定的（这就是 “implicit / deterministic” 的含义）。
 
 
 
