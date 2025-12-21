@@ -1,7 +1,7 @@
 
 ## 0. DDPM 的硬骨架：两条链 + 一个 ELBO
 
-### 0.1 生成模型（反向链）
+### 生成模型（反向链）
 DDPM 把生成分布写成一条从噪声到图像的反向马尔可夫链：
 
 $$
@@ -17,33 +17,40 @@ $$
 
 这就是标准的“潜变量模型”视角
 
-### 0.2 推断/前向链（固定的加噪过程）
+### 推断/前向链（固定的加噪过程）
 DDPM 的前向扩散也是马尔可夫链：
+
 $$
 q(x_{1:T}\mid x_0)=\prod_{t=1}^T q(x_t\mid x_{t-1}),
 \qquad q(x_t\mid x_{t-1})=\mathcal N(\sqrt{\alpha_t}\,x_{t-1},\, (1-\alpha_t)I)
 $$
 
----
 
-## 1. 最关键闭式边缘：$q(x_t\mid x_0)$
+
+## 1. 最关键闭式边缘： $q(x_t\mid x_0)$
 
 这一步是整个扩散模型的基石。
 
 从定义出发：
+
 $$
 x_t=\sqrt{\alpha_t}x_{t-1}+\sqrt{1-\alpha_t}\,\epsilon_t,\quad \epsilon_t\sim\mathcal N(0,I)
 $$
+
 把它连乘展开（或用归纳法）会得到：
+
 $$
 x_t=\sqrt{\bar\alpha_t}\,x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal N(0,I)
 $$
+
 因此边缘分布是：
+
 $$
 q(x_t\mid x_0)=\mathcal N(\sqrt{\bar\alpha_t}\,x_0,\ (1-\bar\alpha_t)I)
 $$
+
 **停一下：这条闭式边缘就是后面 DDIM “训练不变”的核心原因。**
-因为很多训练目标只用到了它，而没用到“联合分布是马尔可夫链”这件事。
+因为很多训练目标只用到了它，而没用到联合分布是马尔可夫链这件事
 
 ---
 
