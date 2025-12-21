@@ -150,7 +150,7 @@ $$
 先用闭式边缘把  $x_t$ 写成：
 
 $$
-x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal N(0,I)
+x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\epsilon,\quad \epsilon\sim\mathcal N(0,I)
 $$
 
 于是可以反解出  $\epsilon$：
@@ -176,7 +176,7 @@ $$
 x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0 + \underbrace{\big(\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\,\epsilon+\sigma_t z\big)}_{\text{仍然是 } \mathcal N(0,\ (1-\bar\alpha_{t-1})I)}
 $$
 
-因为 $\epsilon,z$ 独立高斯，方差相加：
+因为  $\epsilon,z$ 独立高斯，方差相加：
 
 $$
 (1-\bar\alpha_{t-1}-\sigma_t^2)+\sigma_t^2=1-\bar\alpha_{t-1}
@@ -188,32 +188,33 @@ $$
 q_\sigma(x_{t-1}\mid x_0)=\mathcal N(\sqrt{\bar\alpha_{t-1}}x_0,\ (1-\bar\alpha_{t-1})I)
 $$
 
-这就是“边缘完全不变”的严格原因。
+这就是“边缘完全不变”的严格原因
 
 
 
 ## 6. 生成（反向）怎么来：把 $x_0$ 用网络估计替换掉
 
-上面 $q_\sigma(x_{t-1}\mid x_t,x_0)$ 需要真实 $x_0$，但采样时你没有 $x_0$。
+上面  $q_\sigma(x_{t-1}\mid x_t,x_0)$ 需要真实  $x_0$，但采样时你没有  $x_0$
 DDIM/ DDPM 都是同一招：
 
 ### 6.1 先从 $\epsilon_\theta$ 得到“预测的干净图” $\hat x_0$
+
 $$
 x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\epsilon
 \Rightarrow
 x_0=\frac{x_t-\sqrt{1-\bar\alpha_t}\epsilon}{\sqrt{\bar\alpha_t}}
 $$
+
 把 $\epsilon$ 用网络预测 $\epsilon_\theta(x_t,t)$ 替换：
+
 $$
-\hat x_0
-=
-f_\theta(x_t,t)
-:=
-\frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}{\sqrt{\bar\alpha_t}}
+\hat x_0 = f_\theta(x_t,t) := \frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}{\sqrt{\bar\alpha_t}}
 $$
 
 ### 6.2 再把 $\hat x_0$ 塞回刚才的 $q_\sigma$ 均值里
+
 于是定义反向转移：
+
 $$
 p_\theta(x_{t-1}\mid x_t)
 =
@@ -223,7 +224,9 @@ p_\theta(x_{t-1}\mid x_t)
 \ \sigma_t^2 I
 \Big)
 $$
+
 对应一次采样更新就是（你要的“顺着公式到底”版本）：
+
 $$
 \boxed{
 x_{t-1}
@@ -235,14 +238,16 @@ x_{t-1}
 \sigma_t z,\quad z\sim\mathcal N(0,I)
 }
 $$
+
 这条就是很多库里标注的 DDIM 公式（常被称作 Eq.(12) 那条统一式）。
 
----
+
 
 ## 7. 两个“极限/特例”一下就看懂：DDPM vs DDIM
 
 ### 7.1 取特定 $\sigma_t$ $\Rightarrow$ 退化回随机 DDPM（ancestral sampling）
 很多实现用一个 $\eta$ 控制随机性，$\eta=1$ 对应 DDPM 的后验方差：
+
 $$
 \sigma_t
 =
@@ -255,6 +260,7 @@ $$
 
 ### 7.2 取 $\sigma_t=0$ $\Rightarrow$ 确定性 DDIM
 把噪声项直接消掉：
+
 $$
 \boxed{
 x_{t-1}
@@ -264,6 +270,7 @@ x_{t-1}
 \sqrt{1-\bar\alpha_{t-1}}\ \epsilon_\theta(x_t,t)
 }
 $$
+
 此时 给定同一个初始 $x_T$，整条轨迹是确定的（这就是 “implicit / deterministic” 的含义）。
 
 ---
@@ -273,28 +280,38 @@ $$
 你想要的就是这句严格推导（我把关键代数写出来）：
 
 真实推断的均值（来自 $q_\sigma$）：
+
 $$
 \mu_q=\sqrt{\bar\alpha_{t-1}}x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\ \epsilon
 $$
+
 模型的均值（把 $x_0$ 换成 $\hat x_0$）：
+
 $$
 \mu_\theta=\sqrt{\bar\alpha_{t-1}}\hat x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\ \epsilon_\theta
 $$
+
 把 $\hat x_0$ 的定义代进去整理，你会发现：
+
 $$
 \mu_q-\mu_\theta = c_t\cdot(\epsilon-\epsilon_\theta)
 $$
+
 其中 $c_t$ 是只依赖 $\bar\alpha_t,\bar\alpha_{t-1},\sigma_t$ 的系数。
 然后每步 KL（同方差高斯）就是：
+
 $$
 \mathrm{KL}=\frac{1}{2\sigma_t^2}\|\mu_q-\mu_\theta\|^2
 =
 \gamma_t\|\epsilon-\epsilon_\theta\|^2
 $$
+
 所以整个变分目标就是：
+
 $$
 \sum_t \gamma_t\,\mathbb E\|\epsilon-\epsilon_\theta(x_t,t)\|^2 + \text{const}
 $$
+
 这就是“不同 $q_\sigma$（不同 $\sigma$）只会改变权重 $\gamma_t$，但损失形式仍然是噪声预测 MSE”，也就是论文说的“共享 surrogate objective”。
 
 ---
