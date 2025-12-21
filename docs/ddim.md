@@ -208,7 +208,7 @@ $$
 把 $\epsilon$ 用网络预测 $\epsilon_\theta(x_t,t)$ 替换：
 
 $$
-\hat x_0 = f_\theta(x_t,t) := \frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}{\sqrt{\bar\alpha_t}}
+\hat x_0 = f_\theta(x_t,t) := \frac{x_t-\sqrt{1-\bar\alpha_t}\epsilon_\theta(x_t,t)}{\sqrt{\bar\alpha_t}}
 $$
 
 ### 6.2 再把 $\hat x_0$ 塞回刚才的 $q_\sigma$ 均值里
@@ -266,7 +266,7 @@ $$
 
 此时 给定同一个初始 $x_T$，整条轨迹是确定的（这就是 “implicit / deterministic” 的含义）。
 
----
+
 
 ## 8. “训练不变”最后还差一步严谨性：为什么还是噪声 MSE？
 
@@ -294,8 +294,7 @@ $$
 然后每步 KL（同方差高斯）就是：
 
 $$
-\mathrm{KL}=\frac{1}{2\sigma_t^2}\|\mu_q-\mu_\theta\|^2
-=
+\mathrm{KL}=\frac{1}{2\sigma_t^2}\|\mu_q-\mu_\theta\|^2 =
 \gamma_t\|\epsilon-\epsilon_\theta\|^2
 $$
 
