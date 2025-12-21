@@ -28,7 +28,7 @@ $$
 
 ## 1. 最关键闭式边缘：  $q(x_t\mid x_0)$
 
-这一步是整个扩散模型的基石。
+这一步是整个扩散模型的基石
 
 从定义出发：
 
@@ -39,7 +39,7 @@ $$
 把它连乘展开（或用归纳法）会得到：
 
 $$
-x_t=\sqrt{\bar\alpha_t}\,x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal N(0,I)
+x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,\quad \epsilon\sim\mathcal N(0,I)
 $$
 
 因此边缘分布是：
