@@ -1,3 +1,13 @@
+# DDIM: Denoising Diffusion Implicit Models
+
+- **论文链接**: [Denoising Diffusion Implicit Models (ICLR 2021)](https://arxiv.org/abs/2010.02502)
+- **核心摘要**: 提出了一种非马尔可夫（Non-Markovian）扩散过程，实现了确定性采样，大幅加速了生成速度。
+
+## 0. DDPM 的硬骨架：两条链 + 一个 ELBO
+
+### 生成模型（反向链）
+DDPM 把生成分布写成一条从噪声到图像的反向马尔可夫链：
+
 ## 0. DDPM 的硬骨架：两条链 + 一个 ELBO
 
 ### 生成模型（反向链）
