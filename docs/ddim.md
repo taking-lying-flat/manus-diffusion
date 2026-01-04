@@ -1,7 +1,7 @@
 # DDIM: Denoising Diffusion Implicit Models
 
 - **论文链接**: [Denoising Diffusion Implicit Models (ICLR 2021)](https://arxiv.org/abs/2010.02502)
-- **核心摘要**: 提出了一种非马尔可夫（Non-Markovian）扩散过程，实现了确定性采样，大幅加速了生成速度。
+- **核心摘要**: 提出了一种非马尔可夫（Non-Markovian）扩散过程，实现了确定性采样，大幅加速了生成速度
 
 ## 0. DDPM 的硬骨架：两条链 + 一个 ELBO
 
@@ -13,13 +13,13 @@ p_\theta(x_{0:T}) = p(x_T)\prod_{t=1}^{T} p_\theta(x_{t-1}\mid x_t),
 \qquad p(x_T)=\mathcal N(0,I)
 $$
 
-然后我们要优化的边缘分布（对数似然）是：
+然后要优化的边缘分布（对数似然）是：
 
 $$
 p_\theta(x_0)=\int p_\theta(x_{0:T}) dx_{1:T}
 $$
 
-这就是标准的“潜变量模型”视角
+这就是标准的潜变量模型视角
 
 ### 推断/前向链（固定的加噪过程）
 DDPM 的前向扩散也是马尔可夫链：
@@ -32,8 +32,6 @@ $$
 
 
 ## 1. 最关键闭式边缘：  $q(x_t\mid x_0)$
-
-这一步是整个扩散模型的基石
 
 从定义出发：
 
@@ -61,7 +59,7 @@ $$
 ## 2. 反向“真后验”  $q(x_{t-1}\mid x_t,x_0)$
 
 **为什么它也是高斯？**
-你已经有：
+
 1. $q(x_{t-1}\mid x_0)$ 是高斯（用上面闭式边缘）
 2. $q(x_t\mid x_{t-1})$ 是高斯（前向一步）
 
@@ -96,7 +94,7 @@ $$
 \ +\ \text{(t=1 重建项)}
 $$
 
-如果你令反向模型也用高斯、并且方差取某个固定值（或按日程给定）：
+如果令反向模型也用高斯、并且方差取某个固定值（或按日程给定）：
 
 $$
 p_\theta(x_{t-1}\mid x_t)=\mathcal N(\mu_\theta(x_t,t),\ \sigma_t^2 I)
@@ -115,19 +113,16 @@ $$
 \sum_t \gamma_t\ \mathbb E\|\epsilon-\epsilon_\theta(x_t,t)\|^2
 $$
 
-这就是你熟悉的 DDPM “simple loss / noise prediction loss”。
+这就是熟悉的 DDPM “simple loss / noise prediction loss”。
 
 
 ## 4. 到这里为止，你缺的那条“桥”是什么？
 
-你卡的点其实是：
 **为什么 DDIM 能把前向过程改成非马尔可夫，却还“共享训练目标”？**
 
-答案就一句话，但必须用公式说明：
-因为上面的噪声 MSE 训练，只用到了闭式边缘 $q(x_t\mid x_0)$，而不需要用到“联合分布 $q(x_{1:T}\mid x_0)$ 是不是马尔可夫链”。
+因为上面的噪声 MSE 训练，只用到了闭式边缘 $q(x_t\mid x_0)$，而不需要用到“联合分布 $q(x_{1:T}\mid x_0)$ 是不是马尔可夫链”
 
-这正是 DDIM 的构造空间：
-**只要你构造一个新的联合分布 $q_\sigma(x_{1:T}\mid x_0)$，让所有边缘 $q_\sigma(x_t\mid x_0)$ 仍等于同一个 $\mathcal N(\sqrt{\bar\alpha_t}x_0,(1-\bar\alpha_t)I)$，训练那套噪声预测就不需要变。**
+**只要你构造一个新的联合分布 $q_\sigma(x_{1:T}\mid x_0)$，让所有边缘 $q_\sigma(x_t\mid x_0)$ 仍等于同一个 $\mathcal N(\sqrt{\bar\alpha_t}x_0,(1-\bar\alpha_t)I)$，训练那套噪声预测就不需要变**
 
 
 
@@ -164,7 +159,7 @@ $$
 \frac{x_t-\sqrt{\bar\alpha_t}x_0}{\sqrt{1-\bar\alpha_t}}=\epsilon
 $$
 
-然后 DDIM 直接规定（这就是它的定义）：
+然后 DDIM 直接规定
 
 $$
 x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\epsilon+\sigma_t z,
@@ -172,7 +167,7 @@ x_{t-1}=\sqrt{\bar\alpha_{t-1}}x_0+\sqrt{1-\bar\alpha_{t-1}-\sigma_t^2}\epsilon+
 $$
 
 给定  $x_t,x_0$ 时， $\epsilon$ 就被确定了
-这样你立刻得到上面的 $\mu_\sigma$。
+这样立刻得到上面的 $\mu_\sigma$。
 
 ### 5.2 为什么这样做能保证“边缘不变”？
 看 $x_{t-1}\mid x_0$：
@@ -265,13 +260,11 @@ $$
 }
 $$
 
-此时 给定同一个初始  $x_T$，整条轨迹是确定的（这就是 “implicit / deterministic” 的含义）。
+此时给定同一个初始  $x_T$，整条轨迹是确定的（这就是 “implicit / deterministic” 的含义）。
 
 
 
 ## 8. “训练不变”最后还差一步严谨性：为什么还是噪声 MSE？
-
-你想要的就是这句严格推导（我把关键代数写出来）：
 
 真实推断的均值（来自 $q_\sigma$）：
 
@@ -325,4 +318,4 @@ x_{\tau_S}\to x_{\tau_{S-1}}\to \cdots \to x_{\tau_1}\to x_0
 $$
 
 更新式完全同型，只要把  $(t,t-1)$ 换成  $(\tau_i,\tau_{i-1})$，把  $\bar\alpha_t$ 换成  $\bar\alpha_{\tau_i}$
-于是你把网络调用次数从 $T=1000$ 直接降到 $S=50/20$，这就是速度来源
+于是把网络调用次数从 $T=1000$ 直接降到 $S=50/20$，这就是速度来源
