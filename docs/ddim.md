@@ -240,10 +240,6 @@ $$
 }
 $$
 
-这条就是很多库里标注的 DDIM 公式（常被称作 Eq.(12) 那条统一式）。
-
-
-
 ## 7. 两个“极限/特例”一下就看懂：DDPM vs DDIM
 
 ### 7.1 取特定  $\sigma_t$ $\Rightarrow$ 退化回随机 DDPM（ancestral sampling）
